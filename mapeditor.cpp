@@ -1,5 +1,6 @@
 #include "mapeditor.h"
 #include "graphs.h"
+#include <SDL/SDL_image.h>
 
 void MapEditor::init(){
 	if(!SDL_Init(SDL_INIT_EVERYTHING)){
@@ -12,9 +13,14 @@ void MapEditor::init(){
 		if(window){
 			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 			if(renderer){
-				Graphs::drawColor(renderer, Graphs::Color::GRAY);
-				//New doc TODO:: FILE MANAGEMENT
-				newDoc();
+				if(IMG_Init(IMG_INIT_PNG)){
+					//Set default color
+					Graphs::drawColor(renderer, Graphs::Color::GRAY);
+					//New doc TODO:: FILE MANAGEMENT
+					newDoc();
+				}else{
+					SDL_Log("Failed to initialize sdl image.");
+				}
 			}else{
 				SDL_Log("Could not create renderer.");
 			}
@@ -70,6 +76,7 @@ void MapEditor::draw(){
 			Graphs::drawColor(renderer, Graphs::Color::WHITE);
 			if(tile.on){
 				Graphs::drawColor(renderer, Graphs::Color::RED);
+
 			}
 
 			bool horizontal = Graphs::inside(mousex, tile.x, BSIZE),
