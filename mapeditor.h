@@ -2,27 +2,13 @@
 #include <iostream>
 #include <vector>
 #include "editor.h"
-
-namespace Log{	
-	void MouseTile();
-	void MouseCord();
-};
+#include "tileset.h"
+#include "tile.h"
 
 using namespace Editor;
 
-class Tile{
-public:
-	Tile(size_t a, size_t b){
-		x = a;
-		y = b;
-	}
-	size_t x;
-	size_t y;
-	size_t ix; //index x
-	size_t iy; //index y
-	bool on = false;//tmp
-};
-
+#ifndef MAPEDITOR_H
+#define MAPEDITOR_H
 class MapEditor{
 public:
 	void init();
@@ -35,6 +21,8 @@ private:
 	SDL_Window *window = NULL;
 	SDL_Renderer *renderer = NULL;
 	SDL_Event event;
+	Tileset tileset;
 	std::vector<std::vector<Tile> > blocks;
 	bool quit = false;
 };
+#endif

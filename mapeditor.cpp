@@ -1,6 +1,8 @@
 #include "mapeditor.h"
 #include "graphs.h"
+#include "log.h"
 #include <SDL/SDL_image.h>
+#include <iostream>
 
 void MapEditor::init(){
 	if(!SDL_Init(SDL_INIT_EVERYTHING)){
@@ -13,34 +15,36 @@ void MapEditor::init(){
 		if(window){
 			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 			if(renderer){
-				if(IMG_Init(IMG_INIT_PNG)){
+				int imgFlags = IMG_INIT_JPG | IMG_INIT_PNG;
+				if((IMG_Init(imgFlags)) & imgFlags){
 					//Set default color
 					Graphs::drawColor(renderer, Graphs::Color::GRAY);
 					//New doc TODO:: FILE MANAGEMENT
-					newDoc();
+					newDoc();					
 				}else{
-					SDL_Log("Failed to initialize sdl image.");
+					Log::err("Failed to initialize sdl image.");
 				}
 			}else{
-				SDL_Log("Could not create renderer.");
+				Log::err("Could not create renderer.");
 			}
 		}else{
-			SDL_Log("Could not create window.");
+			Log::err("Could not create window.");
 		}
 	}else{
-		SDL_Log("Could not initialize.");
+		Log::err("Could not initialize.");
 	}
 }
 
 void MapEditor::input(){
-	while(SDL_PollEvent(&event)){
 
-		//Get mouse x and y
-		SDL_GetMouseState(&mousex, &mousey);
-		//Set the horizontal index
-		tilex = (size_t) ((mousex / BSIZE) + 0.5);
-		//Set the vertical index
-		tiley = (size_t) ((mousey / BSIZE) + 0.5);
+	//Get mouse x and y
+	SDL_GetMouseState(&mousex, &mousey);
+	//Set the horizontal index
+	tilex = (size_t) ((mousex / BSIZE));
+	//Set the vertical index
+	tiley = (size_t) ((mousey / BSIZE));
+
+	while(SDL_PollEvent(&event)){
 
 		//Handle events
 		switch(event.type){
@@ -54,8 +58,11 @@ void MapEditor::input(){
 				}
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-				if(tilex < BWIDTH && tiley << BHEIGHT) // TODO: SAME FOR < 0 when move is aplicated
-					blocks[tilex][tiley].on = true;
+				if(tilex < BWIDTH && tiley < BHEIGHT){ // TODO: SAME FOR < 0 when move is aplicated
+					blocks[tilex][tiley].setCord(tileset.getCord(1));
+				}
+				Log::MouseTile();
+				Log::ScreenSize();
 				break;
 			case SDL_MOUSEBUTTONUP:
 				
@@ -67,34 +74,38 @@ void MapEditor::input(){
 void MapEditor::draw(){
 	Graphs::refresh(renderer);
 	Graphs::background(renderer);
-	//SDL_RenderCopy();
+
 	//Draw Tiles
 	for(auto tiles : blocks){
 		for(auto tile : tiles){
-			SDL_Rect fillRect = Graphs::rectTile(tile.x, tile.y, BSIZE, BSIZE);
 
-			Graphs::drawColor(renderer, Graphs::Color::WHITE);
-			if(tile.on){
-				Graphs::drawColor(renderer, Graphs::Color::RED);
-
-			}
+			SDL_Rect c = tile.cord,
+					 p = tile.pos();
 
 			bool horizontal = Graphs::inside(mousex, tile.x, BSIZE),
 				 vertical = Graphs::inside(mousey, tile.y, BSIZE);
 			if(horizontal && vertical){
-				Graphs::drawColor(renderer, Graphs::Color::GREEN);
+				c = tileset.getCord(3);
+				SDL_RenderCopy(renderer, tile.tex, &c, &p);
+				continue;
 			}
 
-			SDL_RenderFillRect(renderer, &fillRect);
+			if(!tile.empty)
+				SDL_RenderCopy(renderer, tile.tex, &c, &p);
+
 		}
 	}
+	
+	Graphs::grid(renderer);
+
 	Graphs::apply(renderer);
 }
 
 void MapEditor::loop(){
+
 	while(!quit){
 		input();
-		draw();		
+		draw();	
 	}
 	close();
 }
@@ -104,25 +115,16 @@ void MapEditor::close(){
 }
 
 void MapEditor::newDoc(){
+	//Todo:: change it to newTileset()
+	tileset.init(renderer, "textures.png", 16, 16);
 	//Create new doc
 	for(size_t x=0; x<BWIDTH; x++){
 		std::vector<Tile> tVector;
 		for(size_t y=0; y<BHEIGHT; y++){
-			Tile t(x, y);
+			Tile t(x, y, tileset.texture);
+			//t.setCord(tileset.getCord(43));
 			tVector.push_back(t);
 		}
 		blocks.push_back(tVector);
-	}
-}
-
-namespace Log{
-	void MouseTile(){
-		std::cout << "Tile X: " << tilex << std::endl;
-		std::cout << "Tile Y: " << tiley << std::endl;
-	}
-
-	void MouseCord(){
-		std::cout << "Cord X: " << tilex << std::endl;
-		std::cout << "Cord Y: " << tiley << std::endl;
 	}
 }
