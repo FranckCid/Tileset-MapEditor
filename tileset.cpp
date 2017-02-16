@@ -12,9 +12,7 @@ void Tileset::init(SDL_Renderer *renderer, std::string path, size_t w, size_t h)
 		for(int j = 0; j < tHeight; j+=h){
 			SDL_Rect pos = {i, j, w, h};
 			tiles.push_back(pos);
-			std::cout << j + w << " ";
 		}
-		std::cout << "\n";
 	}
 }
 

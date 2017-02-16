@@ -45,9 +45,10 @@ void MapEditor::input(){
 	//Get the actual mouse x and y
 	SDL_GetMouseState(&mousex, &mousey);
 	//Set the horizontal index
-	tilex = (size_t) ((mousex / BSIZE));
+	tilex = ((mousex - screenX) / BSIZE);
 	//Set the vertical index
-	tiley = (size_t) ((mousey / BSIZE));
+	tiley = ((mousey - screenY) / BSIZE);
+	Log::MouseTile();
 	//Check middle mouse and move
 	if(holdingMiddle){
 		// Move screen relative to scroll
@@ -101,6 +102,10 @@ void MapEditor::input(){
 void MapEditor::draw(){
 	Graphs::refresh(renderer);
 	Graphs::background(renderer);
+	Graphs::drawColor(renderer, Graphs::Color::MEDIUMGRAY);
+	SDL_Rect imgBackRect = {0 + screenX, 0 + screenY, BWIDTH * BSIZE, BHEIGHT * BSIZE};
+	SDL_RenderFillRect(renderer, &imgBackRect);
+	Graphs::drawColor(renderer, Graphs::Color::GRAY);
 
 	//Draw Tiles
 	for(auto tiles : blocks){
@@ -112,12 +117,17 @@ void MapEditor::draw(){
 			p.x += screenX;
 			p.y += screenY;
 
-			bool horizontal = Graphs::inside(mousex, tile.x, BSIZE),
+			/*bool horizontal = Graphs::inside(mousex, tile.x, BSIZE),
 				 vertical = Graphs::inside(mousey, tile.y, BSIZE);
 			if(horizontal && vertical){
 				c = tileset.getCord(3);
 				SDL_RenderCopy(renderer, tile.tex, &c, &p);
 				continue;
+			}*/
+
+			if(tile.x == tilex && tile.y == tiley){
+				c = tileset.getCord(3);
+				SDL_RenderCopy(renderer, tile.tex, &c, &p);
 			}
 
 			if(!tile.empty)

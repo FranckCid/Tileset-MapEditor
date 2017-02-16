@@ -28,6 +28,8 @@ namespace Graphs{
 			SDL_SetRenderDrawColor(renderer, 0x23, 0x23, 0x23, 0xFF );
 		}else if(color & Color::LIGHTGRAY){
 			SDL_SetRenderDrawColor(renderer, 0x55, 0x55, 0x55, 0xFF );
+		}else if(color & Color::MEDIUMGRAY){
+			SDL_SetRenderDrawColor(renderer, 0x33, 0x33, 0x33, 0xFF );
 		}
 	}
 
@@ -90,7 +92,6 @@ namespace Graphs{
 		for(int y=0; y < BHEIGHT*BSIZE; y += BSIZE){
 			SDL_RenderDrawLine(renderer, 0 + sx, y + sy, BWIDTH * BSIZE + sx, y + sy);
 		}
-		std::cout << BSIZE << std::endl;
 		drawColor(renderer, Color::GRAY);
 	}
 
