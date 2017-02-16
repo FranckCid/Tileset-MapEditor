@@ -29,7 +29,7 @@ namespace Graphs{
 	void apply(SDL_Renderer *renderer);
 
 	//Draw
-	void grid(SDL_Renderer*);
+	void grid(SDL_Renderer*, int sx, int sy);
 
 	//Loads
 	SDL_Texture *loadTexture(SDL_Renderer *renderer, std::string path);

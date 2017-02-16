@@ -24,5 +24,7 @@ private:
 	Tileset tileset;
 	std::vector<std::vector<Tile> > blocks;
 	bool quit = false;
+	bool holdingMiddle;
+	int screenX, screenY;
 };
 #endif

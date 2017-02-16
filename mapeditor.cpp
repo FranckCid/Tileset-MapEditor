@@ -1,6 +1,7 @@
 #include "mapeditor.h"
 #include "graphs.h"
 #include "log.h"
+#include "input.h"
 #include <SDL/SDL_image.h>
 #include <iostream>
 
@@ -20,7 +21,11 @@ void MapEditor::init(){
 					//Set default color
 					Graphs::drawColor(renderer, Graphs::Color::GRAY);
 					//New doc TODO:: FILE MANAGEMENT
-					newDoc();					
+					newDoc();
+					//Init vars TMP
+					screenX = 0;
+					screenY = 0;
+					holdingMiddle = false;	
 				}else{
 					Log::err("Failed to initialize sdl image.");
 				}
@@ -37,12 +42,18 @@ void MapEditor::init(){
 
 void MapEditor::input(){
 
-	//Get mouse x and y
+	//Get the actual mouse x and y
 	SDL_GetMouseState(&mousex, &mousey);
 	//Set the horizontal index
 	tilex = (size_t) ((mousex / BSIZE));
 	//Set the vertical index
 	tiley = (size_t) ((mousey / BSIZE));
+	//Check middle mouse and move
+	if(holdingMiddle){
+		// Move screen relative to scroll
+		screenX += difmousex;
+		screenY += difmousey;
+	}
 
 	while(SDL_PollEvent(&event)){
 
@@ -58,17 +69,33 @@ void MapEditor::input(){
 				}
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-				if(tilex < BWIDTH && tiley < BHEIGHT){ // TODO: SAME FOR < 0 when move is aplicated
-					blocks[tilex][tiley].setCord(tileset.getCord(1));
+				switch(event.button.button){
+					case SDL_BUTTON_LEFT:
+						if(tilex < BWIDTH && tiley < BHEIGHT){ // TODO: SAME FOR < 0 when move is aplicated
+							blocks[tilex][tiley].setCord(tileset.getCord(1));
+						}
+						break;
+					case SDL_BUTTON_MIDDLE:
+					case SDL_BUTTON_RIGHT:
+						//Input::holding(Input::Key::Middle);
+						holdingMiddle = true;
+						break;
 				}
-				Log::MouseTile();
-				Log::ScreenSize();
 				break;
 			case SDL_MOUSEBUTTONUP:
-				
+				holdingMiddle = false;
 				break;
 		}
 	}
+
+	//Differente between last mouse pos and actual
+	difmousex = mousex - lastmousex;
+	difmousey = mousey - lastmousey;
+
+	//Make last mouse position equals actual mouse position
+	lastmousex = mousex;
+	lastmousey = mousey;
+
 }
 
 void MapEditor::draw(){
@@ -81,6 +108,9 @@ void MapEditor::draw(){
 
 			SDL_Rect c = tile.cord,
 					 p = tile.pos();
+
+			p.x += screenX;
+			p.y += screenY;
 
 			bool horizontal = Graphs::inside(mousex, tile.x, BSIZE),
 				 vertical = Graphs::inside(mousey, tile.y, BSIZE);
@@ -96,7 +126,7 @@ void MapEditor::draw(){
 		}
 	}
 	
-	Graphs::grid(renderer);
+	Graphs::grid(renderer, screenX, screenY);
 
 	Graphs::apply(renderer);
 }

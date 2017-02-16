@@ -82,13 +82,13 @@ namespace Graphs{
 		return r;
 	}
 
-	void grid(SDL_Renderer *renderer){
+	void grid(SDL_Renderer *renderer, int sx, int sy){
 		drawColor(renderer, Color::LIGHTGRAY);
 		for(int x=0; x < BWIDTH*BSIZE; x += BSIZE){
-			SDL_RenderDrawLine(renderer, x, 0, x, BHEIGHT * BSIZE);
+			SDL_RenderDrawLine(renderer, x + sx, 0 + sy, x + sx, BHEIGHT * BSIZE + sy);
 		}
 		for(int y=0; y < BHEIGHT*BSIZE; y += BSIZE){
-			SDL_RenderDrawLine(renderer, 0, y, BWIDTH * BSIZE, y);
+			SDL_RenderDrawLine(renderer, 0 + sx, y + sy, BWIDTH * BSIZE + sx, y + sy);
 		}
 		std::cout << BSIZE << std::endl;
 		drawColor(renderer, Color::GRAY);
