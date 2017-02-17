@@ -1,2 +1,2 @@
 all :
-	g++ *.cpp -std=c++11 -lSDL2 -lSDL2_image -w -o o
+	g++ *.cpp -std=c++11 -lSDL2 -lSDL2_image -lSDL2_ttf -w -o o

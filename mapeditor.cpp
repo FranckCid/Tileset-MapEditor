@@ -2,7 +2,9 @@
 #include "graphs.h"
 #include "log.h"
 #include "input.h"
-#include <SDL/SDL_image.h>
+#include "text.h"
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 
 void MapEditor::init(){
@@ -16,6 +18,7 @@ void MapEditor::init(){
 		if(window){
 			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 			if(renderer){
+				// Images ---------
 				int imgFlags = IMG_INIT_JPG | IMG_INIT_PNG;
 				if((IMG_Init(imgFlags)) & imgFlags){
 					//Set default color
@@ -28,6 +31,12 @@ void MapEditor::init(){
 					holdingMiddle = false;	
 				}else{
 					Log::err("Failed to initialize sdl image.");
+				}
+				//Text -------
+				if( TTF_Init() == -1 ) {
+					Log::err("SDL_ttf could not initialize! SDL_ttf Error: ");
+				}else{
+					Text::loadFont("8bitwonder.TTF");
 				}
 			}else{
 				Log::err("Could not create renderer.");
@@ -65,6 +74,8 @@ void MapEditor::input(){
 				break;
 			case SDL_MOUSEWHEEL:
 				BSIZE += event.wheel.y;
+				/*screenX += event.wheel.x * BSIZE;
+				screenY += event.wheel.y * BSIZE;*/ //TODO:: Mouse centered scroll
 				if(BSIZE <= 1){
 					BSIZE = 1;
 				}

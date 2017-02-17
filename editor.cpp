@@ -1,7 +1,7 @@
 namespace Editor{
-	int BSIZE = 6; 		//Bricksize or Tilesize
-	int BWIDTH = 128;	//Tiles width
-	int BHEIGHT = 64;	//Tiled height
+	int BSIZE = 12;		//Bricksize or Tilesize
+	int BWIDTH = 32;	//Tiles width
+	int BHEIGHT = 16;	//Tiled height
 	int SWIDTH = 600; 	//Screen width
 	int SHEIGHT = 500;  //Screen height
 	int mousex = 0, mousey = 0;

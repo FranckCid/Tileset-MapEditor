@@ -7,10 +7,12 @@ using namespace Editor;
 
 namespace Log{
 
-	void info(std::string msg, bool breakline){
+	void info(std::string msg){
 		std::cout << msg;
-		if(breakline)
-			std::cout << std::endl;
+	}
+
+	void infoln(std::string msg){
+		std::cout << msg << std::endl;
 	}
 
 	void err(std::string msg){
