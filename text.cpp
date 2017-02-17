@@ -5,8 +5,8 @@ namespace Text{
 	TTF_Font *font = NULL;
 	std::map<std::string, SDL_Texture*> msgs;
 
-	void loadFont(std::string path){
-		font = TTF_OpenFont(path.c_str(), 25);
+	void loadFont(std::string path, int size){
+		font = TTF_OpenFont(path.c_str(), size);
 	}
 
 	//TODO add font to a map

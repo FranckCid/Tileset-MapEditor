@@ -12,7 +12,7 @@ namespace Text{
 	extern TTF_Font *font;
 	extern std::map<std::string, SDL_Texture*> msgs;
 
-	void loadFont(std::string path);
+	void loadFont(std::string path, int size=12);
 
 	SDL_Texture* createText(SDL_Renderer*, std::string, int &width, int &height);
 

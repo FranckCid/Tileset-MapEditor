@@ -37,7 +37,7 @@ void MapEditor::init(){
 				if( TTF_Init() == -1 ) {
 					Log::err("SDL_ttf could not initialize! SDL_ttf Error: ");
 				}else{
-					Text::loadFont("8bitwonder.TTF");
+					Text::loadFont("Ubuntu-L.ttf");
 				}
 			}else{
 				Log::err("Could not create renderer.");
@@ -58,7 +58,6 @@ void MapEditor::input(){
 	tilex = ((mousex - screenX) / BSIZE);
 	//Set the vertical index
 	tiley = ((mousey - screenY) / BSIZE);
-	Log::MouseTile();
 	//Check middle mouse and move
 	if(holdingMiddle){
 		// Move screen relative to scroll
@@ -97,6 +96,13 @@ void MapEditor::input(){
 				break;
 			case SDL_MOUSEBUTTONUP:
 				holdingMiddle = false;
+				break;
+			case SDL_KEYDOWN:
+				switch(event.key.keysym.sym){
+					case SDLK_F3:
+						debug = !debug;
+						break;
+				}
 				break;
 		}
 	}
@@ -141,25 +147,33 @@ void MapEditor::draw(){
 		}
 	}
 
-	Debug::show(renderer);
 	
 	Graphs::grid(renderer, screenX, screenY);
+
+	if(debug)
+		Debug::show(renderer);
 
 	Graphs::apply(renderer);
 }
 
 void MapEditor::loop(){
 
-	float startTick;
+	int frames = 0;
+	Uint32 startTick = 0;
 
 	while(!quit){
-		int startTick = SDL_GetTicks() / 1000;
+		frames++;
+		Uint32 elapsedMS = SDL_GetTicks() - startTick;
 		input();
-		startTick = SDL_GetTicks() - startTick;
-		if(startTick < 1000/MAXFPS){
-			SDL_Delay((1000/MAXFPS) - startTick);
+		
+		if(elapsedMS){
+			double elapsedSeconds = elapsedMS / 1000.0;
+			FPS = frames / elapsedSeconds;
 		}
+
 		draw();
+
+		SDL_Delay(1000.0/MAXFPS);
 	}
 	close();
 }

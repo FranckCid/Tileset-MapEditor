@@ -23,7 +23,7 @@ private:
 	SDL_Event event;
 	Tileset tileset;
 	std::vector<std::vector<Tile> > blocks;
-	bool quit = false;
+	bool quit = false, debug = false;
 	bool holdingMiddle;
 	int screenX, screenY;
 };

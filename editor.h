@@ -10,6 +10,7 @@ namespace Editor{
 	extern int lastmousex, lastmousey;
 	extern int difmousex, difmousey;
 	extern int tilex, tiley;
-	extern int MAXFPS;
+	extern double MAXFPS;
+	extern double FPS;
 };
 #endif
