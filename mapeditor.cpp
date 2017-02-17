@@ -48,25 +48,11 @@ void MapEditor::init(){
 
 void MapEditor::input(){
 
+	Input::handleEvents(event);
 
-	//TODO:: INPUT NAMESPACE
-	while(SDL_PollEvent(&event)){
-		canvas.input(event, tileset);
-
-		//Handle events
-		switch(event.type){
-			case SDL_QUIT:
-				quit = true;
-				break;
-			case SDL_KEYDOWN:
-				switch(event.key.keysym.sym){
-					case SDLK_F3:
-						debug = !debug;
-						break;
-				}
-				break;
-		}
-	}
+	quit = Input::quit;
+	debug = Input::isHolding(SDLK_F3);
+	canvas.input(event, tileset);
 
 	//Differente between last mouse pos and actual
 	difmousex = mousex - lastmousex;

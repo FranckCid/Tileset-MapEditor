@@ -2,10 +2,7 @@
 #include "graphs.h"
 #include "log.h"
 #include "input.h"
-#include "text.h"
 #include "debug.h"
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
 #include <iostream>
 
 void Canvas::init(Tileset &tileset){
@@ -38,34 +35,20 @@ void Canvas::input(SDL_Event event, Tileset &tileset){
 	}
 
 	//TODO:: INPUT NAMESPACE
-	//Handle events
-	switch(event.type){
-		case SDL_MOUSEWHEEL:
-			BSIZE += event.wheel.y;
-			/*screenX += event.wheel.x * BSIZE;
-			screenY += event.wheel.y * BSIZE;*/ //TODO:: Mouse centered scroll
-			if(BSIZE <= 1){
-				BSIZE = 1;
-			}
-			break;
-		case SDL_MOUSEBUTTONDOWN:
-			switch(event.button.button){
-				case SDL_BUTTON_LEFT:
-					if(tilex < BWIDTH && tiley < BHEIGHT){ // TODO: SAME FOR < 0 when move is aplicated
-						blocks[tilex][tiley].setCord(tileset.getCord(1));
-					}
-					break;
-				case SDL_BUTTON_MIDDLE:
-				case SDL_BUTTON_RIGHT:
-					//Input::holding(Input::Key::Middle);
-					holdingMiddle = true;
-					break;
-			}
-			break;
-		case SDL_MOUSEBUTTONUP:
-			holdingMiddle = false;
-			break;
-		
+	BSIZE += Input::wheely;
+	if(BSIZE <= 1)
+		BSIZE = 1;
+
+	if(Input::isHolding(SDL_BUTTON_LEFT)){
+		if(tilex < BWIDTH && tiley < BHEIGHT){ // TODO: SAME FOR < 0 when move is aplicated
+			blocks[tilex][tiley].setCord(tileset.getCord(1));
+		}
+	}else if(Input::isHolding(SDL_BUTTON_MIDDLE) || Input::isHolding(SDL_BUTTON_RIGHT)){
+		holdingMiddle = true;
+	}
+
+	if(!Input::isHolding(SDL_BUTTON_MIDDLE) && !Input::isHolding(SDL_BUTTON_RIGHT)){
+		holdingMiddle = false;
 	}
 }
 
