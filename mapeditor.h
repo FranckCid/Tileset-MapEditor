@@ -4,6 +4,7 @@
 #include "editor.h"
 #include "tileset.h"
 #include "tile.h"
+#include "canvas.h"
 
 using namespace Editor;
 
@@ -22,9 +23,7 @@ private:
 	SDL_Renderer *renderer = NULL;
 	SDL_Event event;
 	Tileset tileset;
-	std::vector<std::vector<Tile> > blocks;
 	bool quit = false, debug = false;
-	bool holdingMiddle;
-	int screenX, screenY;
+	Canvas canvas;
 };
 #endif
