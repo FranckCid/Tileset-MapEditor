@@ -3,6 +3,7 @@
 #include "log.h"
 #include "input.h"
 #include "text.h"
+#include "debug.h"
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
@@ -128,14 +129,6 @@ void MapEditor::draw(){
 			p.x += screenX;
 			p.y += screenY;
 
-			/*bool horizontal = Graphs::inside(mousex, tile.x, BSIZE),
-				 vertical = Graphs::inside(mousey, tile.y, BSIZE);
-			if(horizontal && vertical){
-				c = tileset.getCord(3);
-				SDL_RenderCopy(renderer, tile.tex, &c, &p);
-				continue;
-			}*/
-
 			if(tile.x == tilex && tile.y == tiley){
 				c = tileset.getCord(3);
 				SDL_RenderCopy(renderer, tile.tex, &c, &p);
@@ -144,8 +137,11 @@ void MapEditor::draw(){
 			if(!tile.empty)
 				SDL_RenderCopy(renderer, tile.tex, &c, &p);
 
+
 		}
 	}
+
+	Debug::show(renderer);
 	
 	Graphs::grid(renderer, screenX, screenY);
 
@@ -154,14 +150,23 @@ void MapEditor::draw(){
 
 void MapEditor::loop(){
 
+	float startTick;
+
 	while(!quit){
+		int startTick = SDL_GetTicks() / 1000;
 		input();
-		draw();	
+		startTick = SDL_GetTicks() - startTick;
+		if(startTick < 1000/MAXFPS){
+			SDL_Delay((1000/MAXFPS) - startTick);
+		}
+		draw();
 	}
 	close();
 }
 
 void MapEditor::close(){
+	//Todo:: QUIT IMG
+	Text::close();
 	SDL_Quit();
 }
 

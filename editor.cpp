@@ -8,4 +8,5 @@ namespace Editor{
 	int lastmousex = 0, lastmousey = 0;
 	int difmousex = 0, difmousey = 0;
 	int tilex = 0, tiley = 0;
+	int MAXFPS = 60;
 };
