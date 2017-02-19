@@ -80,8 +80,7 @@ void Canvas::draw(SDL_Renderer *renderer, Tileset &tileset){
 			p.y += screenY;
 
 			if(tile.x == Editor::tilex && tile.y == Editor::tiley){
-				//c = tileset.getCord(3);
-				SDL_RenderCopy(renderer, tile.tex, &tileset.actualTile->cord, &p);
+				SDL_RenderCopy(renderer, tileset.actualTile->tex, &tileset.actualTile->cord, &p);
 			}
 
 			if(!tile.empty){

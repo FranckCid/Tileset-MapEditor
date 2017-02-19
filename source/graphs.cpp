@@ -31,6 +31,8 @@ namespace Graphs{
 			SDL_SetRenderDrawColor(renderer, 0x55, 0x55, 0x55, 0xFF );
 		}else if(color & Color::MEDIUMGRAY){
 			SDL_SetRenderDrawColor(renderer, 0x33, 0x33, 0x33, 0xFF );
+		}else if(color & Color::YELLOW){
+			SDL_SetRenderDrawColor(renderer, 0xff, 0xdf, 0x00, 0xFF );
 		}
 	}
 

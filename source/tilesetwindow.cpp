@@ -24,6 +24,9 @@ void TilesetWindow::draw(SDL_Renderer *renderer, Tileset &tileset){
 				if(Input::isHolding(SDL_BUTTON_LEFT)){
 					tileset.actualTile = &(tileset.tiles[i]);
 				}
+				Graphs::drawColor(renderer, Graphs::Color::YELLOW);
+				SDL_Rect r = {pos.x, pos.y, 16, 16};
+				SDL_RenderFillRect(renderer, &r);
 			}
 			i++;
 		}

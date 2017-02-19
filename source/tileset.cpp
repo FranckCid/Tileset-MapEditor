@@ -16,9 +16,7 @@ void Tileset::init(SDL_Renderer *renderer, std::string path, int w, int h){
 			tiles.push_back(t);
 		}
 	}
-	Tile t(1, 1, texture);
-	t.setCord(getCord(0));
-	actualTile = &t;
+	actualTile = &tiles[0];
 }
 
 SDL_Rect Tileset::getCord(int i){

@@ -13,6 +13,7 @@ namespace Graphs{
 		static const int WHITE = 8;
 		static const int LIGHTGRAY = 16;
 		static const int MEDIUMGRAY = 32;
+		static const int YELLOW = 64;
 	}
 	
 	//Textures map, i made it so it never repeats
