@@ -1,16 +1,11 @@
 #include <SDL2/SDL.h>
-#include "editor.h"
 #include <string>
 #include <map>
-
-using namespace Editor;
 
 #ifndef GRAPHS
 #define GRAPHS
 namespace Graphs{
 
-	#ifndef COLOR
-	#define COLOR
 	namespace Color{
 		static const int RED = 1;
 		static const int GREEN = 2;
@@ -19,8 +14,7 @@ namespace Graphs{
 		static const int LIGHTGRAY = 16;
 		static const int MEDIUMGRAY = 32;
 	}
-	#endif
-
+	
 	//Textures map, i made it so it never repeats
 	extern std::map<std::string, SDL_Texture*> textures;
 
@@ -44,5 +38,6 @@ namespace Graphs{
 
 	//COLISIONS
 	bool inside(int pos, int n1, int nn); //n1 = first pos and nn = last pos
+	bool insideBox(int x, int y, SDL_Rect &pos);
 };
 #endif

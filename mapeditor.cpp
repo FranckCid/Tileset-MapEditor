@@ -4,17 +4,19 @@
 #include "input.h"
 #include "text.h"
 #include "debug.h"
+#include "editor.h"
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
+
 
 void MapEditor::init(){
 	if(!SDL_Init(SDL_INIT_EVERYTHING)){
 		window = SDL_CreateWindow("Map Editor",
 								   SDL_WINDOWPOS_UNDEFINED,
 								   SDL_WINDOWPOS_UNDEFINED,
-								   SWIDTH,
-								   SHEIGHT,
+								   Editor::SWIDTH,
+								   Editor::SHEIGHT,
 								   SDL_WINDOW_SHOWN);
 		if(window){
 			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
@@ -50,17 +52,17 @@ void MapEditor::input(){
 
 	Input::handleEvents(event);
 
-	quit = Input::quit;
-	debug = Input::isHolding(SDLK_F3);
 	canvas.input(event, tileset);
+	tilesetWindow.input(event, tileset);
 
-	//Differente between last mouse pos and actual
-	difmousex = mousex - lastmousex;
-	difmousey = mousey - lastmousey;
-
-	//Make last mouse position equals actual mouse position
-	lastmousex = mousex;
-	lastmousey = mousey;
+	quit = Input::quit;
+	if(Input::isHolding(SDLK_F3) && !onceDebug){
+		debug = !debug;
+		onceDebug = true;
+	}
+	if(!Input::isHolding(SDLK_F3) && onceDebug){
+		onceDebug = false;
+	}
 
 }
 
@@ -68,6 +70,7 @@ void MapEditor::draw(){
 	Graphs::refresh(renderer);
 	
 	canvas.draw(renderer, tileset);
+	tilesetWindow.draw(renderer, tileset);
 
 	if(debug)
 		Debug::show(renderer);
@@ -76,7 +79,8 @@ void MapEditor::draw(){
 }
 
 void MapEditor::loop(){
-
+	quit = false;
+	debug = false;
 	int frames = 0;
 	Uint32 startTick = 0;
 
@@ -87,12 +91,12 @@ void MapEditor::loop(){
 		
 		if(elapsedMS){
 			double elapsedSeconds = elapsedMS / 1000.0;
-			FPS = frames / elapsedSeconds;
+			Editor::FPS = frames / elapsedSeconds;
 		}
 
 		draw();
 
-		SDL_Delay(1000.0/MAXFPS);
+		SDL_Delay(1000.0/Editor::MAXFPS);
 	}
 	close();
 }
@@ -106,6 +110,6 @@ void MapEditor::close(){
 void MapEditor::newDoc(){
 	//Todo:: change it to newTileset()
 	tileset.init(renderer, "textures.png", 16, 16);
-	//Create new doc
 	canvas.init(tileset);
+	//Create new doc
 }

@@ -1,5 +1,5 @@
-#import <map>
-#import <SDL2/SDL.h>
+#include <map>
+#include <SDL2/SDL.h>
 
 namespace Input{
 	extern std::map<Uint8, bool> keyMap;

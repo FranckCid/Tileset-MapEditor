@@ -1,8 +1,10 @@
+#include "editor.h"
+
 namespace Editor{
 	int BSIZE = 12;							//Bricksize or Tilesize
 	int BWIDTH = 32;						//Tiles width
 	int BHEIGHT = 16;						//Tiled height
-	int SWIDTH = 600; 						//Screen width
+	int SWIDTH = 800; 						//Screen width
 	int SHEIGHT = 500;  					//Screen height
 	int mousex = 0, mousey = 0; 			//Mouse cords
 	int lastmousex = 0, lastmousey = 0; 	//Last mouse cords

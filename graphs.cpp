@@ -1,5 +1,6 @@
 #include "graphs.h"
 #include "log.h"
+#include "editor.h"
 #include <SDL2/SDL_image.h>
 #include <iostream>
 
@@ -13,7 +14,7 @@ namespace Graphs{
 
 	void background(SDL_Renderer *renderer){
 		drawColor(renderer, Color::GRAY);
-		SDL_Rect entireScreen = {0, 0, SWIDTH, SHEIGHT};
+		SDL_Rect entireScreen = {0, 0, Editor::SWIDTH, Editor::SHEIGHT};
 		SDL_RenderFillRect(renderer, &entireScreen);
 	}
 
@@ -35,6 +36,12 @@ namespace Graphs{
 
 	bool inside(int pos, int n1, int nn){ //n1 = first pos and nn = last pos
 		return (pos >= n1*nn && pos < n1*nn + nn);
+	}
+
+	bool insideBox(int x, int y, SDL_Rect &pos){
+		bool hor = (Editor::mousex >= pos.x && Editor::mousex <= pos.x + pos.w);
+		bool ver = (Editor::mousey >= pos.y && Editor::mousey <= pos.y + pos.h);
+		return (hor && ver);
 	}
 
 	void apply(SDL_Renderer *renderer){		
@@ -86,11 +93,11 @@ namespace Graphs{
 
 	void grid(SDL_Renderer *renderer, int sx, int sy){
 		drawColor(renderer, Color::LIGHTGRAY);
-		for(int x=0; x < BWIDTH*BSIZE; x += BSIZE){
-			SDL_RenderDrawLine(renderer, x + sx, 0 + sy, x + sx, BHEIGHT * BSIZE + sy);
+		for(int x=0; x < Editor::BWIDTH*Editor::BSIZE+1; x += Editor::BSIZE){
+			SDL_RenderDrawLine(renderer, x + sx, 0 + sy, x + sx, Editor::BHEIGHT * Editor::BSIZE + sy);
 		}
-		for(int y=0; y < BHEIGHT*BSIZE; y += BSIZE){
-			SDL_RenderDrawLine(renderer, 0 + sx, y + sy, BWIDTH * BSIZE + sx, y + sy);
+		for(int y=0; y < Editor::BHEIGHT*Editor::BSIZE+1; y += Editor::BSIZE){
+			SDL_RenderDrawLine(renderer, 0 + sx, y + sy, Editor::BWIDTH * Editor::BSIZE + sx, y + sy);
 		}
 		drawColor(renderer, Color::GRAY);
 	}

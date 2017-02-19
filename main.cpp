@@ -1,8 +1,6 @@
 #include <SDL2/SDL.h>
-#include <vector>
 #include <iostream>
 #include "mapeditor.h"
-#include "editor.h"
 
 int main(int argv, char* args[]){
 

@@ -3,17 +3,14 @@
 #include "tileset.h"
 #include "tile.h"
 
-#ifndef CANVAS_H
-#define CANVAS_H
-class Canvas{
+#ifndef TILESET_WINDOW_H
+#define TILESET_WINDOW_H
+class TilesetWindow{
 public:
 	void init(Tileset &tileset);
-	void loop();
 	void input(SDL_Event &event, Tileset &tileset);
 	void draw(SDL_Renderer *renderer, Tileset &tileset);
 private:
 	std::vector<std::vector<Tile> > blocks;
-	bool holdingMiddle;
-	int screenX, screenY;
 };
 #endif
