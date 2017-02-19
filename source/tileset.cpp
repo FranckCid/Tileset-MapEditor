@@ -3,7 +3,7 @@
 #include <iostream>
 #include "log.h"
 
-void Tileset::init(SDL_Renderer *renderer, std::string path, size_t w, size_t h){
+void Tileset::init(SDL_Renderer *renderer, std::string path, int w, int h){
 	texture = Graphs::loadTexture(renderer, path);
 	int tWidth, tHeight;
 	

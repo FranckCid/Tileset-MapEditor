@@ -22,7 +22,7 @@ void TilesetWindow::draw(SDL_Renderer *renderer, Tileset &tileset){
 				SDL_RenderCopy(renderer, tileset.texture, &(tileset.tiles[i].cord), &pos);
 			}else{
 				if(Input::isHolding(SDL_BUTTON_LEFT)){
-					//actualTile = &(tileset.tiles[i]);
+					tileset.actualTile = &(tileset.tiles[i]);
 				}
 			}
 			i++;

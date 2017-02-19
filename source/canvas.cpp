@@ -42,7 +42,7 @@ void Canvas::input(SDL_Event &event, Tileset &tileset){
 
 	if(Input::isHolding(SDL_BUTTON_LEFT)){
 		if(Editor::tilex < Editor::BWIDTH && Editor::tiley < Editor::BHEIGHT && Editor::tilex >= 0 && Editor::tiley >= 0){ // TODO: SAME FOR < 0 when move is aplicated
-			blocks[Editor::tilex][Editor::tiley].setCord(tileset.getCord(1));
+			blocks[Editor::tilex][Editor::tiley].setCord(tileset.actualTile->cord);
 		}
 	}else if(Input::isHolding(SDL_BUTTON_MIDDLE) || Input::isHolding(SDL_BUTTON_RIGHT)){
 		holdingMiddle = true;
