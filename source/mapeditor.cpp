@@ -112,7 +112,7 @@ void MapEditor::newDoc(){
 	SDL_Rect r = {Editor::SWIDTH * 0.3, 0, Editor::SWIDTH * 0.7, Editor::SHEIGHT};
 	tileset.init(renderer, "textures.png", 16, 16);
 	canvas.init(r, tileset);
-	r = {0, 0, Editor::SWIDTH * 0.3, Editor::SHEIGHT};
+	r = {0, 0, Editor::SWIDTH * 0.3, Editor::SHEIGHT * 0.5};
 	tilesetWindow.init(r, tileset);
 	//Create new doc
 }
