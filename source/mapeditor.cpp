@@ -73,7 +73,7 @@ void MapEditor::draw(){
 	tilesetWindow.draw(renderer, tileset);
 
 	if(debug)
-		Debug::show(renderer);
+		Debug::show(renderer, canvas.transform, tilesetWindow.transform);
 
 	Graphs::apply(renderer);
 }
@@ -109,7 +109,10 @@ void MapEditor::close(){
 
 void MapEditor::newDoc(){
 	//Todo:: change it to newTileset()
+	SDL_Rect r = {Editor::SWIDTH * 0.3, 0, Editor::SWIDTH * 0.7, Editor::SHEIGHT};
 	tileset.init(renderer, "textures.png", 16, 16);
-	canvas.init(tileset);
+	canvas.init(r, tileset);
+	r = {0, 0, Editor::SWIDTH * 0.3, Editor::SHEIGHT};
+	tilesetWindow.init(r, tileset);
 	//Create new doc
 }

@@ -19,21 +19,40 @@ namespace Graphs{
 	}
 
 	void drawColor(SDL_Renderer *renderer, int color){
-		if(color & Color::WHITE)
-			SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF );
-		else if(color & Color::RED){
-			SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF );
-		}else if(color & Color::GREEN){
-			SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 0xFF );
-		}else if(color & Color::GRAY){
-			SDL_SetRenderDrawColor(renderer, 0x23, 0x23, 0x23, 0xFF );
-		}else if(color & Color::LIGHTGRAY){
-			SDL_SetRenderDrawColor(renderer, 0x55, 0x55, 0x55, 0xFF );
-		}else if(color & Color::MEDIUMGRAY){
-			SDL_SetRenderDrawColor(renderer, 0x33, 0x33, 0x33, 0xFF );
-		}else if(color & Color::YELLOW){
-			SDL_SetRenderDrawColor(renderer, 0xff, 0xdf, 0x00, 0xFF );
+		Uint8 r = 0x00, g = 0x00, b = 0x00, a = 0xFF;
+		switch(color){
+			case Color::WHITE:
+				r = 0xFF;
+				g = 0xFF;
+				b = 0xFF;
+			break;
+			case Color::RED:
+				r = 0xdd;
+			break;
+			case Color::GREEN:
+				g = 0xff;
+			break;
+			case Color::GRAY:
+				r = 0x23;
+				g = 0x23;
+				b = 0x23;
+			break;
+			case Color::LIGHTGRAY:
+				r = 0x55;
+				g = 0x55;
+				b = 0x55;
+			break;
+			case Color::MEDIUMGRAY:
+				r = 0x33;
+				g = 0x33;
+				b = 0x33;
+			break;
+			case Color::YELLOW:
+				r = 0xff;
+				g = 0xdf;
+			break;
 		}
+		SDL_SetRenderDrawColor(renderer, r, g, b, a);
 	}
 
 	bool inside(int pos, int n1, int nn){ //n1 = first pos and nn = last pos

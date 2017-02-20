@@ -7,7 +7,7 @@
 using namespace Editor;
 
 namespace Debug{
-	void show(SDL_Renderer *renderer){
+	void show(SDL_Renderer *renderer, SDL_Rect &canvas, SDL_Rect &tilesetPanel){
 		int tmpw, tmph;
 		SDL_Rect tmppos;
 		SDL_Texture *tmptex = NULL;
@@ -32,5 +32,8 @@ namespace Debug{
 		tmptex = Text::createText(renderer, str.str(), tmpw, tmph);
 		tmppos = {mousex + 10, mousey + 15, tmpw, tmph};
 		SDL_RenderCopy(renderer, tmptex, NULL, &tmppos);
+
+		//Conteiners init
+		SDL_RenderFillRect(renderer, &tilesetPanel);
 	}
 };

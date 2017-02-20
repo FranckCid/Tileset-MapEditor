@@ -6,7 +6,10 @@
 #include "editor.h"
 #include <iostream>
 
-void Canvas::init(Tileset &tileset){
+Canvas::Canvas() : Panel(){}
+
+void Canvas::init(SDL_Rect screenPos, Tileset &tileset){
+	transform = screenPos;
 	screenX = 0;
 	screenY = 0;
 	holdingMiddle = false;
@@ -24,9 +27,9 @@ void Canvas::input(SDL_Event &event, Tileset &tileset){
 	//Get the actual mouse x and y
 	SDL_GetMouseState(&Editor::mousex, &Editor::mousey);
 	//Set the horizontal index
-	Editor::tilex = ((Editor::mousex - screenX) / Editor::BSIZE);
+	Editor::tilex = ((Editor::mousex - screenX  - transform.x) / Editor::BSIZE);
 	//Set the vertical index
-	Editor::tiley = ((Editor::mousey - screenY) / Editor::BSIZE);
+	Editor::tiley = ((Editor::mousey - screenY  - transform.y) / Editor::BSIZE);
 	//Check middle mouse and move
 	if(holdingMiddle){
 		// Move screen relative to scroll
@@ -65,7 +68,7 @@ void Canvas::input(SDL_Event &event, Tileset &tileset){
 void Canvas::draw(SDL_Renderer *renderer, Tileset &tileset){
 	Graphs::background(renderer);
 	Graphs::drawColor(renderer, Graphs::Color::MEDIUMGRAY);
-	SDL_Rect imgBackRect = {0 + screenX, 0 + screenY, Editor::BWIDTH * Editor::BSIZE, Editor::BHEIGHT * Editor::BSIZE};
+	SDL_Rect imgBackRect = {0 + screenX + transform.x, 0 + screenY + transform.y, Editor::BWIDTH * Editor::BSIZE, Editor::BHEIGHT * Editor::BSIZE};
 	SDL_RenderFillRect(renderer, &imgBackRect);
 	Graphs::drawColor(renderer, Graphs::Color::GRAY);
 
@@ -76,8 +79,8 @@ void Canvas::draw(SDL_Renderer *renderer, Tileset &tileset){
 			SDL_Rect c = tile.cord,
 					 p = tile.pos();
 
-			p.x += screenX;
-			p.y += screenY;
+			p.x += screenX  + transform.x;
+			p.y += screenY  + transform.y;
 
 			if(tile.x == Editor::tilex && tile.y == Editor::tiley){
 				SDL_RenderCopy(renderer, tileset.actualTile->tex, &tileset.actualTile->cord, &p);
@@ -90,5 +93,5 @@ void Canvas::draw(SDL_Renderer *renderer, Tileset &tileset){
 		}
 	}
 	
-	Graphs::grid(renderer, screenX, screenY);
+	Graphs::grid(renderer, screenX + transform.x, screenY + transform.y);
 }
